@@ -61,7 +61,7 @@ class S3BS_Guard {
 			return false;
 		}
 
-		return (bool) @copy( S3BS_DIR . 'includes/mu-guard-template.php', self::mu_path() );
+		return (bool) @copy( S3BS_DIR . 'includes/mu-guard-template.tpl', self::mu_path() );
 	}
 
 	public static function read_state() {

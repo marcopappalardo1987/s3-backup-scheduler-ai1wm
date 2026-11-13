@@ -3,7 +3,7 @@
  * Plugin Name:       S3 Backup Scheduler for All-in-One WP Migration
  * Plugin URI:        https://github.com/marcopappalardo1987/s3-backup-scheduler-ai1wm
  * Description:       Pianifica backup di All-in-One WP Migration che finiscono direttamente nel tuo bucket Amazon S3 (o compatibile), scegli quali backup conservare e ripristinali dal bucket usando il motore di import di All-in-One WP Migration. Rimuove inoltre il limite di dimensione dell'import da file.
- * Version:           1.1.0
+ * Version:           1.1.1
  * Requires at least: 5.8
  * Requires PHP:      7.2
  * Requires Plugins:  all-in-one-wp-migration

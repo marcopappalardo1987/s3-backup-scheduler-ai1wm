@@ -5,7 +5,7 @@ Author URI: https://marcopappalardo.it
 Requires at least: 5.8
 Requires PHP: 7.2
 Requires Plugins: all-in-one-wp-migration
-Stable tag: 1.1.0
+Stable tag: 1.1.1
 License: GPLv3 or later
 
 Backup pianificati di All-in-One WP Migration direttamente su Amazon S3 (o compatibili) e ripristino dal bucket.
@@ -59,6 +59,9 @@ Per pubblicare una nuova versione: alza "Version:" in s3-backup-scheduler-ai1wm.
 qui), aggiungi una voce al Changelog e fai push su main.
 
 == Changelog ==
+
+= 1.1.1 =
+* Corretto: dopo il caricamento dello zip WordPress proponeva di attivare il file interno della protezione ripristino ("Il plugin ha un'intestazione non valida").
 
 = 1.1.0 =
 * Aggiornamenti automatici da GitHub (branch main).
