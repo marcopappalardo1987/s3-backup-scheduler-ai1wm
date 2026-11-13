@@ -17,7 +17,8 @@ class S3BS_Updater {
 	const BRANCH    = 'main';
 	const SLUG      = 's3-backup-scheduler-ai1wm';
 	const TRANSIENT = 's3bs_github_update';
-	const TTL       = 6 * HOUR_IN_SECONDS;
+	const TTL       = HOUR_IN_SECONDS;
+	const ERROR     = 's3bs_github_update_error';
 
 	public static function init() {
 		add_filter( 'update_plugins_github.com', array( __CLASS__, 'check' ), 10, 3 );
@@ -25,6 +26,8 @@ class S3BS_Updater {
 		add_filter( 'upgrader_source_selection', array( __CLASS__, 'fix_folder' ), 10, 4 );
 		add_filter( 'plugin_row_meta', array( __CLASS__, 'row_meta' ), 10, 2 );
 		add_action( 'admin_post_s3bs_check_update', array( __CLASS__, 'force_check' ) );
+		add_action( 'admin_notices', array( __CLASS__, 'check_notice' ) );
+		add_action( 'network_admin_notices', array( __CLASS__, 'check_notice' ) );
 		add_action( 'upgrader_process_complete', array( __CLASS__, 'flush' ), 10, 0 );
 	}
 
@@ -53,7 +56,8 @@ class S3BS_Updater {
 
 		$data     = array();
 		$response = wp_remote_get(
-			self::raw_url( self::SLUG . '.php' ),
+			// Il CDN di GitHub tiene i file in cache 5 minuti: nel controllo forzato la evitiamo.
+			self::raw_url( self::SLUG . '.php' ) . ( $force ? '?nocache=' . time() : '' ),
 			array(
 				'timeout' => 10,
 				'headers' => self::headers(),
@@ -75,8 +79,17 @@ class S3BS_Updater {
 			}
 		}
 
-		// In caso di errore riprova tra un'ora invece che a ogni caricamento di pagina.
-		set_site_transient( self::TRANSIENT, $data, empty( $data ) ? HOUR_IN_SECONDS : self::TTL );
+		if ( empty( $data ) ) {
+			$error = is_wp_error( $response )
+				? $response->get_error_message()
+				: sprintf( 'HTTP %d', (int) wp_remote_retrieve_response_code( $response ) );
+			update_site_option( self::ERROR, $error );
+		} else {
+			delete_site_option( self::ERROR );
+		}
+
+		// In caso di errore riprova tra 15 minuti invece che a ogni caricamento di pagina.
+		set_site_transient( self::TRANSIENT, $data, empty( $data ) ? 15 * MINUTE_IN_SECONDS : self::TTL );
 
 		return empty( $data ) ? null : $data;
 	}
@@ -247,8 +260,37 @@ class S3BS_Updater {
 		delete_site_transient( 'update_plugins' );
 		wp_update_plugins();
 
-		wp_safe_redirect( is_network_admin() || is_multisite() ? network_admin_url( 'plugins.php' ) : admin_url( 'plugins.php' ) );
+		wp_safe_redirect( add_query_arg( 's3bs_checked', '1', is_multisite() ? network_admin_url( 'plugins.php' ) : admin_url( 'plugins.php' ) ) );
 		exit;
+	}
+
+	/**
+	 * Esito di "Controlla aggiornamenti".
+	 */
+	public static function check_notice() {
+		if ( empty( $_GET['s3bs_checked'] ) || ! current_user_can( 'update_plugins' ) ) { // phpcs:ignore WordPress.Security.NonceVerification
+			return;
+		}
+
+		$remote = self::remote();
+		if ( ! $remote ) {
+			$error = (string) get_site_option( self::ERROR, '' );
+			echo '<div class="notice notice-error is-dismissible"><p><strong>S3 Backup Scheduler:</strong> ' . esc_html__( 'impossibile leggere la versione da GitHub', 's3-backup-scheduler-ai1wm' ) . ( $error !== '' ? ' (' . esc_html( $error ) . ')' : '' ) . '.</p></div>';
+			return;
+		}
+
+		$newer = version_compare( $remote['version'], S3BS_VERSION, '>' );
+		printf(
+			'<div class="notice %1$s is-dismissible"><p><strong>S3 Backup Scheduler:</strong> %2$s</p></div>',
+			$newer ? 'notice-warning' : 'notice-success',
+			esc_html(
+				$newer
+					/* translators: 1: versione su GitHub, 2: versione installata */
+					? sprintf( __( 'disponibile la versione %1$s (installata: %2$s). Usa "Aggiorna ora" qui sotto.', 's3-backup-scheduler-ai1wm' ), $remote['version'], S3BS_VERSION )
+					/* translators: %s: versione installata */
+					: sprintf( __( 'nessun aggiornamento: la versione %s è la più recente.', 's3-backup-scheduler-ai1wm' ), S3BS_VERSION )
+			)
+		);
 	}
 
 	public static function flush() {

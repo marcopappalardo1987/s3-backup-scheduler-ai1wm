@@ -53,7 +53,7 @@ Credenziali consigliate in wp-config.php:
 
 Il plugin si aggiorna da GitHub (https://github.com/marcopappalardo1987/s3-backup-scheduler-ai1wm),
 branch main: avviso nella pagina Plugin, "Aggiorna ora" e aggiornamenti automatici di WordPress.
-Il controllo avviene ogni 6 ore; per forzarlo usa "Controlla aggiornamenti" sotto il nome del plugin.
+Il controllo avviene ogni ora; per forzarlo usa "Controlla aggiornamenti" sotto il nome del plugin.
 
 Per pubblicare una nuova versione: alza "Version:" in s3-backup-scheduler-ai1wm.php (e "Stable tag"
 qui), aggiungi una voce al Changelog e fai push su main.
@@ -62,6 +62,7 @@ qui), aggiungi una voce al Changelog e fai push su main.
 
 = 1.1.1 =
 * Corretto: dopo il caricamento dello zip WordPress proponeva di attivare il file interno della protezione ripristino ("Il plugin ha un'intestazione non valida").
+* Controllo aggiornamenti ogni ora; "Controlla aggiornamenti" ignora la cache di GitHub e mostra l'esito.
 
 = 1.1.0 =
 * Aggiornamenti automatici da GitHub (branch main).

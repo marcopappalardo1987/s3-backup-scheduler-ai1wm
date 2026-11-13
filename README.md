@@ -39,7 +39,7 @@ Per pubblicare una nuova versione:
 2. aggiungi la voce nel `== Changelog ==` di `readme.txt`;
 3. push su `main`.
 
-I siti controllano ogni 6 ore; "Controlla aggiornamenti" sotto il nome del plugin forza il controllo.
+I siti controllano ogni ora; "Controlla aggiornamenti" sotto il nome del plugin forza il controllo.
 
 ## Licenza
 
