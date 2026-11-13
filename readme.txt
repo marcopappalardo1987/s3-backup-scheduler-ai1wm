@@ -5,7 +5,7 @@ Author URI: https://marcopappalardo.it
 Requires at least: 5.8
 Requires PHP: 7.2
 Requires Plugins: all-in-one-wp-migration
-Stable tag: 1.1.1
+Stable tag: 1.2.0
 License: GPLv3 or later
 
 Backup pianificati di All-in-One WP Migration direttamente su Amazon S3 (o compatibili) e ripristino dal bucket.
@@ -30,7 +30,7 @@ Backup pianificati di All-in-One WP Migration direttamente su Amazon S3 (o compa
 
 1. Carica la cartella `s3-backup-scheduler-ai1wm` in `wp-content/plugins/` (o installa lo zip).
 2. Attiva All-in-One WP Migration e poi questo plugin.
-3. Menu "Backup S3" > "Impostazioni S3": inserisci credenziali, bucket, regione e premi "Verifica connessione".
+3. Menu "All-in-One WP Migration" > "Backup S3" > "Impostazioni S3": inserisci credenziali, bucket, regione e premi "Verifica connessione".
 4. Crea una pianificazione nella scheda "Pianificazioni".
 
 Credenziali consigliate in wp-config.php:
@@ -59,6 +59,9 @@ Per pubblicare una nuova versione: alza "Version:" in s3-backup-scheduler-ai1wm.
 qui), aggiungi una voce al Changelog e fai push su main.
 
 == Changelog ==
+
+= 1.2.0 =
+* "Backup S3" ora è una voce del menu di All-in-One WP Migration (dopo "Backup"). Su multisite resta un menu autonomo.
 
 = 1.1.1 =
 * Corretto: dopo il caricamento dello zip WordPress proponeva di attivare il file interno della protezione ripristino ("Il plugin ha un'intestazione non valida").

@@ -12,7 +12,7 @@ Plugin WordPress di [Marco Pappalardo](https://marcopappalardo.it) che estende *
 
 1. Scarica lo zip: [main.zip](https://github.com/marcopappalardo1987/s3-backup-scheduler-ai1wm/archive/refs/heads/main.zip).
 2. WordPress → Plugin → Aggiungi nuovo → Carica plugin → seleziona lo zip → Attiva.
-3. Menu **Backup S3** → **Impostazioni S3**: credenziali, bucket, regione/endpoint → **Verifica connessione**.
+3. Menu **All-in-One WP Migration** → **Backup S3** → **Impostazioni S3**: credenziali, bucket, regione/endpoint → **Verifica connessione**.
 
 ### Cloudflare R2
 

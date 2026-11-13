@@ -11,7 +11,8 @@ class S3BS_Admin {
 	const NONCE = 's3bs_admin';
 
 	public static function init() {
-		add_action( 'admin_menu', array( __CLASS__, 'menu' ) );
+		// Priorità 20: il menu di All-in-One WP Migration deve già esistere.
+		add_action( 'admin_menu', array( __CLASS__, 'menu' ), 20 );
 		add_action( 'admin_notices', array( __CLASS__, 'dependency_notice' ) );
 
 		if ( ! S3BS_Plugin::ai1wm_ready() ) {
@@ -38,20 +39,48 @@ class S3BS_Admin {
 		return add_query_arg( array_merge( array( 'page' => self::SLUG, 'tab' => $tab ), $args ), admin_url( 'admin.php' ) );
 	}
 
+	/** @var string Hook della pagina del plugin (per caricare CSS/JS solo lì). */
+	private static $hook = '';
+
 	public static function menu() {
 		if ( ! self::can_manage() ) {
 			return;
 		}
 
-		add_menu_page(
-			__( 'Backup S3', 's3-backup-scheduler-ai1wm' ),
-			__( 'Backup S3', 's3-backup-scheduler-ai1wm' ),
-			'manage_options',
-			self::SLUG,
-			array( __CLASS__, 'render' ),
-			'dashicons-cloud-upload',
-			77
-		);
+		$title = __( 'Backup S3', 's3-backup-scheduler-ai1wm' );
+
+		// Dentro il menu di All-in-One WP Migration, subito dopo "Backup". Su multisite AI1WM ha il
+		// menu solo nella bacheca di rete, quindi lì (e se AI1WM manca) resta un menu autonomo.
+		$parent = 'ai1wm_export';
+		if ( ! is_multisite() && S3BS_Plugin::ai1wm_ready() && self::menu_exists( $parent ) ) {
+			$hook = add_submenu_page( $parent, $title, $title, 'manage_options', self::SLUG, array( __CLASS__, 'render' ), self::position_after( $parent, 'ai1wm_backups' ) );
+		} else {
+			$hook = add_menu_page( $title, $title, 'manage_options', self::SLUG, array( __CLASS__, 'render' ), 'dashicons-cloud-upload', 77 );
+		}
+
+		self::$hook = (string) $hook;
+	}
+
+	private static function menu_exists( $slug ) {
+		global $menu;
+		foreach ( (array) $menu as $item ) {
+			if ( isset( $item[2] ) && $item[2] === $slug ) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private static function position_after( $parent, $slug ) {
+		global $submenu;
+		$position = 0;
+		foreach ( isset( $submenu[ $parent ] ) ? (array) $submenu[ $parent ] : array() as $item ) {
+			++$position;
+			if ( isset( $item[2] ) && $item[2] === $slug ) {
+				return $position;
+			}
+		}
+		return null;
 	}
 
 	public static function action_links( $links ) {
@@ -79,7 +108,7 @@ class S3BS_Admin {
 	}
 
 	public static function assets( $hook ) {
-		if ( $hook !== 'toplevel_page_' . self::SLUG ) {
+		if ( self::$hook === '' || $hook !== self::$hook ) {
 			return;
 		}
 
