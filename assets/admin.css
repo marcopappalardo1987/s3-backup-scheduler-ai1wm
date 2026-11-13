@@ -1,0 +1,185 @@
+.s3bs-wrap .s3bs-card {
+	background: #fff;
+	border: 1px solid #c3c4c7;
+	border-radius: 4px;
+	padding: 4px 20px 16px;
+	margin: 20px 0;
+	max-width: 1100px;
+}
+
+.s3bs-wrap h2 {
+	margin-top: 1.6em;
+}
+
+.s3bs-wrap .s3bs-card h2 {
+	margin-top: 1em;
+}
+
+.s3bs-options-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+	gap: 6px 20px;
+	margin: 10px 0;
+}
+
+.s3bs-table {
+	max-width: 1100px;
+	margin-top: 10px;
+}
+
+.s3bs-table td {
+	vertical-align: middle;
+}
+
+.s3bs-actions-col {
+	width: 290px;
+}
+
+.s3bs-actions .button {
+	margin: 2px 4px 2px 0;
+}
+
+.s3bs-key {
+	font-size: 11px;
+	color: #50575e;
+	word-break: break-all;
+}
+
+.s3bs-badge {
+	display: inline-block;
+	margin-left: 6px;
+	padding: 0 6px;
+	border-radius: 3px;
+	background: #f0f6fc;
+	color: #2271b1;
+	font-size: 11px;
+	line-height: 18px;
+}
+
+.s3bs-badge-off {
+	background: #f6f7f7;
+	color: #646970;
+}
+
+.s3bs-status {
+	font-weight: 600;
+}
+
+.s3bs-status-ok {
+	color: #008a20;
+}
+
+.s3bs-status-error {
+	color: #d63638;
+}
+
+.s3bs-status-running {
+	color: #2271b1;
+}
+
+.s3bs-warning {
+	color: #996800;
+}
+
+.s3bs-when select,
+.s3bs-when input {
+	vertical-align: middle;
+}
+
+.s3bs-when > span {
+	margin-left: 6px;
+}
+
+.s3bs-pre {
+	background: #f6f7f7;
+	border: 1px solid #dcdcde;
+	padding: 12px;
+	overflow: auto;
+	max-width: 100%;
+	font-size: 12px;
+}
+
+.s3bs-test-result {
+	display: inline-block;
+	margin-left: 10px;
+	vertical-align: middle;
+}
+
+.s3bs-test-result.is-ok {
+	color: #008a20;
+}
+
+.s3bs-test-result.is-error {
+	color: #d63638;
+}
+
+/* Pannello stato operazione */
+.s3bs-job {
+	max-width: 1100px;
+	margin: 20px 0;
+	padding: 14px 18px;
+	background: #fff;
+	border: 1px solid #c3c4c7;
+	border-left: 4px solid #2271b1;
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+}
+
+.s3bs-job.is-done {
+	border-left-color: #00a32a;
+}
+
+.s3bs-job.is-error {
+	border-left-color: #d63638;
+}
+
+.s3bs-job.is-confirm {
+	border-left-color: #dba617;
+}
+
+.s3bs-job-head {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+}
+
+.s3bs-job-head .spinner {
+	float: none;
+	margin: 0;
+	display: none;
+}
+
+.s3bs-job-head .spinner.is-active {
+	display: inline-block;
+}
+
+.s3bs-job-message {
+	margin-top: 8px;
+	white-space: pre-line;
+}
+
+.s3bs-job-actions {
+	margin-top: 10px;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 6px;
+	align-items: center;
+}
+
+.s3bs-job-actions:empty {
+	display: none;
+}
+
+.s3bs-busy .s3bs-protect-toggle {
+	pointer-events: none;
+	opacity: 0.6;
+}
+
+@media screen and (max-width: 782px) {
+	.s3bs-actions-col {
+		width: auto;
+	}
+
+	.s3bs-actions .button {
+		margin-bottom: 6px;
+	}
+}
